@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
-    "test:ui": "npx plawright test",
-    "ui-mode": "npx plawright test --ui"
+    "test:ui": "npx playwright test",
+    "ui-mode": "npx playwright test --ui"
   },
   "keywords": [],
   "author": "",
