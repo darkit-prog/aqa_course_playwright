@@ -1,5 +1,5 @@
 import { test, expect, Page } from "@playwright/test"
-import { expectedTable, testData } from "../data/get-table-row.data"
+import { expectedTable } from "../data/get-table-row.data"
 // Создать функцию getTableRow(page, email), которая возвращает строку в таблице по емейлу.
 // Например getTableRow(page, 'jsmith@gmail.com') =>
 //  { "Last Name": "Smith", "First Name": "John", Email: "jsmith@gmail.com", Due: "$50.00", "Web Site": "http://www.jsmith.com" }
@@ -12,7 +12,6 @@ async function getTableRow(page: Page, email: string) {
     const rowLocator = table.locator("tbody tr").filter({ hasText: email })
     const cellLocator = await rowLocator.locator("td").all();
     const cell = await Promise.all(cellLocator.map(el => el.innerText()));
-    if (!cell.length) return undefined;
 
     const rowData = headers.reduce <Record<string, string>> ((result, header, i) => {
         result[header] = cell[i] ?? "";
@@ -32,10 +31,10 @@ test.describe("Get person by email from table 2", () => {
         await expect(page.locator("h3")).toHaveText("Data Tables");
     });
 
-    for (let i = 0; i< testData.length; i++) {
-        test(`Find person by email ${testData[i]!} in table`, async ({ page }) => {
-            const getTable = await getTableRow(page, testData[i]!);
-            expect(getTable, `Expected table row should be equal to actual ${expectedTable[i]}`).toStrictEqual(expectedTable[i]);
+    for (let i = 0; i < expectedTable.length; i++) {
+        test(`Find person by email ${expectedTable[i]?.Email!} in table`, async ({ page }) => {
+            const getTable = await getTableRow(page, expectedTable[i]?.Email!);
+            expect(getTable, `Expected table row should be equal to actual ${expectedTable[i]}`).toEqual(expectedTable[i]);
         });
     };
 })

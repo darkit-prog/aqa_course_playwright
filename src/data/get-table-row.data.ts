@@ -1,13 +1,12 @@
-export const testData = [
-    "blabla@gmail.com",
-    "jsmith@gmail.com",
-    "tconway@earthlink.net",
-    "fbach@yahoo.com",
-    "jdoe@hotmail.com"
-]
+interface ITableRow {
+    'Last Name': string;
+    'First Name': string;
+    Email: string;
+    Due: string;
+    'Web Site': string;
+}
 
-export const expectedTable = [
-    undefined,
+export const expectedTable: ITableRow[] = [
     {
         'Last Name': 'Smith',
         'First Name': 'John',
@@ -38,4 +37,4 @@ export const expectedTable = [
     }
 ]
 
-export default { testData, expectedTable };
+export default { expectedTable };
