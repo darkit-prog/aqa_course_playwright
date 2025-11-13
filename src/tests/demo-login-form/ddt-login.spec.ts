@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test"
-import { userData } from "../data/demo-login-form.data"
+import { userData } from "../../data/demo-login-form/demo-login-form.data"
 
 // Создать тест сьют используя DDT подход с негативными тест-кейсами по регистрации на сайте
 test.describe("Register in demo-login-form", () => {

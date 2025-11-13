@@ -1,0 +1,54 @@
+import test, { expect } from "@playwright/test";
+import { credentials } from "../../../config/env";
+import { NOTIFICATIONS } from "../../../data/salesPortal/notifications";
+import { generateProductData } from "../../../data/salesPortal/products/generateProductData";
+import { HomePage } from "../../../ui/pages/home.base";
+import { AddNewProductPage } from "../../../ui/pages/products/addNewProduct.page";
+import { ProductsListPage } from "../../../ui/pages/products/productsList.page";
+import { SignInPage } from "../../../ui/pages/signIn.page";
+
+test.describe("[Sales Portal] [Products]", async () => {
+  test("Add new product", async ({ page }) => {
+    const signInProductPage = new SignInPage(page);
+    const homePage = new HomePage(page);
+    const productsListPage = new ProductsListPage(page);
+    const addNewProductPage = new AddNewProductPage(page);
+    const firstRowOfTable = page.locator('#table-products tbody tr').first();
+    
+    //login page
+    // Открыть Sales Portal локально поднятый в докере
+    await signInProductPage.open();
+    await expect(signInProductPage.emailInput).toBeVisible();
+
+    // Войти в приложения используя учетные данные указанные в readme к проекту
+    await signInProductPage.sighIn(credentials);
+
+    // home page
+    await homePage.waitForOpened();
+    await homePage.clickOnViewModule("Products");
+
+    // product list page
+    await productsListPage.waitForOpened();
+    await productsListPage.clickAddNewProduct();
+
+    // add new product page
+    await addNewProductPage.waitForOpened();
+
+    // Создать продукт (модуль Products)
+    const productData = generateProductData();
+    await addNewProductPage.fillForm(productData);
+    await addNewProductPage.clickSave();
+
+    // return product list page
+    await productsListPage.waitForOpened();
+
+    // Верифицировать появившуюся нотификацию
+    await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
+    await expect(productsListPage.tableRowByName(productData.name)).toBeVisible();
+    
+    // Верифицировать созданный продукт в таблице (сравнить все имеющиеся поля, продукт должен быть самым верхним)
+    await expect(firstRowOfTable.locator('td:nth-child(1)')).toHaveText(productData.name);
+    await expect(firstRowOfTable.locator('td:nth-child(2)')).toHaveText(`$${productData.price}`);
+    await expect(firstRowOfTable.locator('td:nth-child(3)')).toHaveText(productData.manufacturer);
+  });
+});
