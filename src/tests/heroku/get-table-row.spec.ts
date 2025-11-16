@@ -1,5 +1,5 @@
 import { test, expect, Page } from "@playwright/test"
-import { expectedTable } from "../data/get-table-row.data"
+import { expectedTable } from "../../data/get-table-row.data"
 // Создать функцию getTableRow(page, email), которая возвращает строку в таблице по емейлу.
 // Например getTableRow(page, 'jsmith@gmail.com') =>
 //  { "Last Name": "Smith", "First Name": "John", Email: "jsmith@gmail.com", Due: "$50.00", "Web Site": "http://www.jsmith.com" }

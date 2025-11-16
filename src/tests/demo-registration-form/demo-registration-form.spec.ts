@@ -1,5 +1,4 @@
-import {test, expect, Page} from "@playwright/test"
-import { exec } from "child_process";
+import { test, expect } from "@playwright/test"
 
 // Создайте ОДИН смоук тест со следующими шагами:
 // 1. Переход на страницу https://anatoly-karpovich.github.io/demo-registration-form/
