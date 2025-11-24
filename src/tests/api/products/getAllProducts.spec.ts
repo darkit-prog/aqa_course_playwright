@@ -16,6 +16,23 @@ test.describe("[API] [Sales Portal] [Products]", () => {
   let id = "";
   let token = "";
 
+  // login befor tests
+  test.beforeEach(async ({ request }) => {
+    // Залогиниться
+    const loginResponse = await request.post(`${baseURL}${endpoints.login}`, {
+      data: credentials,
+      headers: {
+        'content-type': 'application/json',
+      },
+    });
+    const loginBody = await loginResponse.json();
+    token = loginResponse.headers()['authorization']!;
+
+    validateJsonSchema(loginBody, loginSchema);
+    expect.soft(loginResponse.status()).toBe(STATUS_CODES.OK);
+    expect(token).toBeTruthy();
+  });
+
   // delete product after test
   test.afterAll(async ({ request }) => {
     if (id) {
@@ -32,21 +49,6 @@ test.describe("[API] [Sales Portal] [Products]", () => {
   });
 
   test("Get all products", async ({ request }) => {
-    // Залогиниться
-    const loginResponse = await request.post(baseURL + endpoints.login, {
-      data: credentials,
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-    
-    const loginBody = await loginResponse.json();
-    token = loginResponse.headers()['authorization']!;
-
-    validateJsonSchema(loginBody, loginSchema);
-    expect.soft(loginResponse.status()).toBe(STATUS_CODES.OK);
-    expect(token).toBeTruthy();
-
     // Создать продукт и проверить 201й статус
     const productData = generateProductData();
     const createProductResponse = await request.post(baseURL + endpoints.products, {
