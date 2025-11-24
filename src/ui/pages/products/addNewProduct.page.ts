@@ -1,4 +1,4 @@
-import { IProduct } from "../../../data/types/product.types";
+import { IProduct } from "data/types/product.types";
 import { SalesPortalPage } from "../salesPortal.page";
 
 export class AddNewProductPage extends SalesPortalPage {

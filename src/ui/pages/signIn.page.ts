@@ -5,8 +5,8 @@
 //   - fillCredentials method
 //   - click on login button method
 import { BasePage } from "./base.page";
-import { SALES_PORTAL_URL } from "../../config/env";
-import { ICredentials } from "../../data/types/credentials.types";
+import { SALES_PORTAL_URL } from "config/env";
+import { ICredentials } from "data/types/credentials.types";
 
 export class SignInPage extends BasePage {
     readonly emailInput = this.page.locator("#emailinput");

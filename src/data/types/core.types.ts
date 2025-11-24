@@ -1,6 +1,5 @@
-export interface ICredentials {
-  username: string;
-  password: string;
+export interface ID {
+  _id: string;
 }
 
 export interface IResponseFields {
