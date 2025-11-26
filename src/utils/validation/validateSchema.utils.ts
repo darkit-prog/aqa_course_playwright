@@ -1,6 +1,5 @@
 import { expect } from "@playwright/test";
 import Ajv from "ajv";
-import { shuffle } from "lodash";
 
 export function validateJsonSchema(body: object, schema: object) {
   const ajv = new Ajv();
