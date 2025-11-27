@@ -1,11 +1,11 @@
 import { test as base, expect } from "@playwright/test";
-import { RequestApi } from "tests/api/apiClients/requestApi";
-import { ProductsApi } from "tests/api/api/products.api";
-import { LoginApi } from "tests/api/api/login.api";
-import { LoginService } from "tests/api/service/login.service";
-import { ProductsApiService } from "tests/api/service/products.service";
+import { RequestApi } from "api/apiClients/requestApi";
+import { ProductsApi } from "api/api/products.api";
+import { LoginApi } from "api/api/login.api";
+import { LoginService } from "api/service/login.service";
+import { ProductsApiService } from "api/service/products.service";
 
-interface IApi {
+export interface IApi {
   // api
   productsApi: ProductsApi;
   loginApi: LoginApi;
