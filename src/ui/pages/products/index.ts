@@ -1,4 +1,4 @@
 import { ProductsListPage } from "./productsList.page";
-import { AddNewProductPage } from "./addNewProduct.page";
+import { NewProductPage } from "./product.page";
 
-export { ProductsListPage, AddNewProductPage };
+export { ProductsListPage, NewProductPage };
