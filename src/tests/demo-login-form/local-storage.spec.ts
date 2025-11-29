@@ -1,4 +1,5 @@
 import {test, expect} from "@playwright/test";
+import { TAGS } from "data/tags";
 
 interface ICredential {
     name: string,
@@ -11,7 +12,9 @@ const user: ICredential = {
 };
 
 test.describe("herokuapp Dynamic Controls", () => {
-    test("HomeWork 2", async ({ page }) => {
+    test("HomeWork 2", 
+        { tag: [TAGS.REGRESSION, TAGS.UI] },
+        async ({ page }) => {
         const url = "https://anatoly-karpovich.github.io/demo-login-form/";
         const usernameInput = page.locator("#userName");
         const passwordInput = page.locator("#password");

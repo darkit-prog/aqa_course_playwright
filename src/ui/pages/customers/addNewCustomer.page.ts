@@ -1,3 +1,4 @@
+import { logStep } from "utils/report/logStep.utils";
 import { SalesPortalPage } from "../salesPortal.page";
 import { ICustomer } from "data/types/customers.type";
 
@@ -18,6 +19,7 @@ export class NewCustomerPage extends SalesPortalPage {
   // Уникальное поле - Email
   readonly uniqueElement = this.emailInput;
 
+  @logStep("Fill form to create customer")
   async fillForm(customerData: Partial<ICustomer>) {
     if (customerData.email) await this.emailInput.fill(customerData.email);
     if (customerData.name) await this.nameInput.fill(customerData.name);
@@ -30,6 +32,7 @@ export class NewCustomerPage extends SalesPortalPage {
     if (customerData.phone) await this.phoneInput.fill(customerData.phone);
   }
 
+  @logStep("Save filled form to create customer")
   async clickSave() {
     // await this.saveButton.scrollIntoViewIfNeeded()
     await this.saveButton.click({ force: false });

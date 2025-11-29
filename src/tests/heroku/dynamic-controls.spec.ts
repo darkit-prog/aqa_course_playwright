@@ -1,8 +1,11 @@
 import {test, expect} from "@playwright/test";
+import { TAGS } from "data/tags";
 
 // Разработать тест со следующими шагами:
 test.describe("herokuapp Dynamic Controls", () => {
-    test("HomeWork 1", async ({ page }) => {
+    test("HomeWork 1", 
+        { tag: [TAGS.REGRESSION, TAGS.UI] },
+        async ({ page }) => {
         const url = "https://the-internet.herokuapp.com/";
         const dynamicContorlsHref = page.getByRole("link", { name: "Dynamic Controls" });
         const removeButton = page.getByRole("button", { name: "Remove" });

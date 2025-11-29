@@ -1,10 +1,13 @@
 import { test, expect } from "@playwright/test"
 import { userData } from "../../data/demo-login-form/demo-login-form.data"
+import { TAGS } from "data/tags";
 
 // Создать тест сьют используя DDT подход с негативными тест-кейсами по регистрации на сайте
 test.describe("Register in demo-login-form", () => {
     for (const { title, credentials, message} of userData) {
-        test(title, async ({ page }) => {
+        test(title, 
+            { tag: [TAGS.SMOKE, TAGS.UI] },
+            async ({ page }) => {
             const url = "https://anatoly-karpovich.github.io/demo-login-form/";
             const registerOnButtonLink = page.locator("#registerOnLogin");
             const registerButton = page.locator("#register");

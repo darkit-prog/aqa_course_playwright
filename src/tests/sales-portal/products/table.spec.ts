@@ -1,7 +1,8 @@
-import test, { expect } from "@playwright/test";
+import { test, expect } from "fixtures/business.fixture";
 import { credentials } from "config/env";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
+import { TAGS } from "data/tags";
 import _ from "lodash";
 import { HomePage } from "ui/pages/home.page";
 import { NewProductPage } from "ui/pages/products/product.page";
@@ -9,17 +10,12 @@ import { ProductsListPage } from "ui/pages/products/productsList.page";
 import { SignInPage } from "ui/pages/signIn.page";
 
 test.describe("[Sales Portal] [Products]", () => {
-  test("Table parsing", async ({ page }) => {
-    const signInProductPage = new SignInPage(page);
-    const homePage = new HomePage(page);
+  test("Table parsing", 
+    { tag: [TAGS.SMOKE, TAGS.UI] },
+    async ({ page, productsListUIService }) => {
     const productsListPage = new ProductsListPage(page);
     const addNewProductPage = new NewProductPage(page);
-    await signInProductPage.open();
-    await expect(signInProductPage.emailInput).toBeVisible();
-    await signInProductPage.sighIn(credentials);
-
-    await homePage.waitForOpened();
-    await homePage.clickOnViewModule("Products");
+    await productsListUIService.open();
     await productsListPage.waitForOpened();
     await productsListPage.clickAddNewProduct();
     await addNewProductPage.waitForOpened();

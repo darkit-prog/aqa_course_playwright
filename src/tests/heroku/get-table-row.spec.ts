@@ -1,5 +1,6 @@
 import { test, expect, Page } from "@playwright/test"
 import { expectedTable } from "../../data/get-table-row.data"
+import { TAGS } from "data/tags";
 // Создать функцию getTableRow(page, email), которая возвращает строку в таблице по емейлу.
 // Например getTableRow(page, 'jsmith@gmail.com') =>
 //  { "Last Name": "Smith", "First Name": "John", Email: "jsmith@gmail.com", Due: "$50.00", "Web Site": "http://www.jsmith.com" }
@@ -32,7 +33,9 @@ test.describe("Get person by email from table 2", () => {
     });
 
     for (let i = 0; i < expectedTable.length; i++) {
-        test(`Find person by email ${expectedTable[i]?.Email!} in table`, async ({ page }) => {
+        test(`Find person by email ${expectedTable[i]?.Email!} in table`, 
+            { tag: [TAGS.REGRESSION, TAGS.UI] },
+            async ({ page }) => {
             const getTable = await getTableRow(page, expectedTable[i]?.Email!);
             expect(getTable, `Expected table row should be equal to actual ${expectedTable[i]}`).toEqual(expectedTable[i]);
         });

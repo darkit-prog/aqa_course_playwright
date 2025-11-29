@@ -1,30 +1,23 @@
 import { generateCustomerData } from "data/salesPortal/customers/generateCustomerData";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
+import { TAGS } from "data/tags";
 import { test, expect } from "fixtures/business.fixture";
 
-test.describe("[Integration] [Sales Portal] [Home] [Metrics]", () => {
+test.describe("[E2E] [Sales Portal] [Customers]", () => {
     let id = "";
     let token = ""
 
-    // За собой удаляем продукт через апи, разумеется:)
-    // - Удалить покупателя через API
-    test.afterEach(async ({ customerApiService }) => {
-        if (id) await customerApiService.delete(token, id);
-        id = "";
-    });
-
-    test(`[Customer] Add customer`, async({ loginUIService, homeUIService, addNewCustomerPage, customerApiService, customersListUIService, customerListPage }) => {
+    test(`Add customer`, 
+        { tag: [TAGS.SMOKE, TAGS.UI] },
+        async({ homeUIService, addNewCustomerPage, customerApiService, customersListUIService, customerListPage }) => {
         const customerData = generateCustomerData();
         
         //   - залогиниться
-        token = await loginUIService.loginAsAdmin();
-
+        token = await customerListPage.getAuthToken();
         //   - Перейти на страницу Customers List
-        await homeUIService.homePage.open("#/customers");
-        // await customersListUIService.openAddNewCustomerPage();
+        await homeUIService.homePage.open("customers");
 
         //   - Перейти на страницу Add New Customer
-        // await addNewCustomerPage.open();
         await customersListUIService.openAddNewCustomerPage();
 
         //   - Заполнить поля валидными данными
@@ -39,5 +32,12 @@ test.describe("[Integration] [Sales Portal] [Home] [Metrics]", () => {
     
         //   - Проверить наличие покупателя в таблице
         await expect(customerListPage.tableRowByEmail(customerData.email)).toBeVisible();
+    });
+
+    // За собой удаляем продукт через апи, разумеется:)
+    // - Удалить покупателя через API
+    test.afterEach(async ({ customerApiService }) => {
+        if (id) await customerApiService.delete(token, id);
+        id = "";
     });
 });

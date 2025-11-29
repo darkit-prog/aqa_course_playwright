@@ -1,4 +1,6 @@
 import {test, expect, Page} from "@playwright/test"
+import { TAGS } from "data/tags";
+import { logStep } from "utils/report/logStep.utils";
 
 // Разработайте смоук тест-сьют с тестами на REGISTER на странице https://anatoly-karpovich.github.io/demo-login-form/
 //   Страница регистрации:
@@ -78,13 +80,17 @@ test.describe("Register in demo-login-form", () => {
         await registerOnButtonLink.click();
     });
 
-    test("Register with valid credentions", async ({ page }) => {
+    test("Register with valid credentions", 
+        { tag: [TAGS.SMOKE, TAGS.UI] },
+        async ({ page }) => {
         const notification = page.locator("#errorMessageOnRegister");
         await registerPage(page, validCredentials.username, validCredentials.password);
         await expect(notification).toHaveText(NOTIFICATIONS.REGISTER_SUCCESS);
     });
 
-    test("Login with valid credentions", async ({ page }) => {
+    test("Login with valid credentions", 
+        { tag: [TAGS.SMOKE, TAGS.UI] },
+        async ({ page }) => {
         const backButton = page.locator("#backOnRegister");
         await registerPage(page, validCredentials.username, validCredentials.password);
         await backButton.click();
