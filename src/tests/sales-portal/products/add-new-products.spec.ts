@@ -1,18 +1,39 @@
-import test, { expect } from "@playwright/test";
+import { test, expect } from "fixtures/business.fixture";
 import { credentials } from "config/env";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { HomePage } from "ui/pages/home.page";
-import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
+import { NewProductPage } from "ui/pages/products/product.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
 import { SignInPage } from "ui/pages/signIn.page";
 
 test.describe("[Sales Portal] [Products]", async () => {
+  let id = "";
+  let token = "";
+
+  test.afterEach( async ({ productsApiService }) => {
+    if (id) await productsApiService.delete(token, id);
+    id = "";
+  });
+
+  test("Add new product with services", async ({ loginUIService, homeUIService, productsListUIService, addNewProductUIService, productsListPage }) => {
+    token = await loginUIService.loginAsAdmin();
+    await homeUIService.homePage.waitForOpened();
+
+    await productsListUIService.openAddNewProductPage();
+
+    const createProduct = await addNewProductUIService.create();
+    id = createProduct._id;
+
+    await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
+    await expect(productsListPage.tableRowByName(createProduct.name)).toBeVisible();
+  });
+
   test("Add new product", async ({ page }) => {
     const signInProductPage = new SignInPage(page);
     const homePage = new HomePage(page);
     const productsListPage = new ProductsListPage(page);
-    const addNewProductPage = new AddNewProductPage(page);
+    const addNewProductPage = new NewProductPage(page);
     const firstRowOfTable = page.locator('#table-products tbody tr').first();
     
     //login page
@@ -37,7 +58,7 @@ test.describe("[Sales Portal] [Products]", async () => {
     // Создать продукт (модуль Products)
     const productData = generateProductData();
     await addNewProductPage.fillForm(productData);
-    await addNewProductPage.clickSave();
+    await addNewProductPage.clickSaveNewProduct();
 
     // return product list page
     await productsListPage.waitForOpened();

@@ -4,7 +4,7 @@ import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import _ from "lodash";
 import { HomePage } from "ui/pages/home.page";
-import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
+import { NewProductPage } from "ui/pages/products/product.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
 import { SignInPage } from "ui/pages/signIn.page";
 
@@ -13,7 +13,7 @@ test.describe("[Sales Portal] [Products]", () => {
     const signInProductPage = new SignInPage(page);
     const homePage = new HomePage(page);
     const productsListPage = new ProductsListPage(page);
-    const addNewProductPage = new AddNewProductPage(page);
+    const addNewProductPage = new NewProductPage(page);
     await signInProductPage.open();
     await expect(signInProductPage.emailInput).toBeVisible();
     await signInProductPage.sighIn(credentials);
@@ -25,7 +25,7 @@ test.describe("[Sales Portal] [Products]", () => {
     await addNewProductPage.waitForOpened();
     const productData = generateProductData();
     await addNewProductPage.fillForm(productData);
-    await addNewProductPage.clickSave();
+    await addNewProductPage.clickSaveNewProduct();
     await productsListPage.waitForOpened();
     await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
     await expect(productsListPage.tableRowByName(productData.name)).toBeVisible();

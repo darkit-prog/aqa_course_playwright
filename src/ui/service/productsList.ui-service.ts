@@ -1,17 +1,19 @@
 import { expect, Page } from "@playwright/test";
-import { IProductDetails } from "data/types/product.types";
+import { IProduct, IProductDetails } from "data/types/product.types";
 import _ from "lodash";
-import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
+import { NewProductPage } from "ui/pages/products/product.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
 import { convertToFullDateAndTime } from "utils/date.utils";
 
 export class ProductsListUIService {
   productsListPage: ProductsListPage;
-  addNewProductPage: AddNewProductPage;
+  addNewProductPage: NewProductPage;
+  editProductPage: NewProductPage;
 
   constructor(private page: Page) {
     this.productsListPage = new ProductsListPage(page);
-    this.addNewProductPage = new AddNewProductPage(page);
+    this.addNewProductPage = new NewProductPage(page);
+    this.editProductPage = new NewProductPage(page);
   }
 
   async openAddNewProductPage() {
@@ -47,10 +49,21 @@ export class ProductsListUIService {
     await this.productsListPage.waitForOpened();
   }
 
+  async openEditProductPage(productName: string) {
+    await this.productsListPage.editButton(productName).click();
+    await this.editProductPage.waitForOpened();
+  }
+
   assertDetailsData(actual: IProductDetails, expected: IProductDetails) {
     expect(actual).toEqual({
       ..._.omit(expected, ["_id"]),
       createdOn: convertToFullDateAndTime(expected.createdOn),
+    });
+  }
+
+  assertDetailsDataAfterEdit(actual: IProductDetails, expected: IProduct) {
+    expect({..._.omit(actual, ["createdOn"])}).toEqual({
+      ..._.omit(expected, ["_id"]),
     });
   }
 

@@ -20,7 +20,7 @@ export class AddNewProductUIService {
     await this.addNewProductPage.waitForOpened();
   }
 
-  async create(productData?: Partial<IProduct>) {
+  async update(productData?: Partial<IProduct>) {
     const data = generateProductData(productData);
     await this.addNewProductPage.fillForm(data);
     const response = await this.addNewProductPage.interceptResponse<IProductResponse, any>(

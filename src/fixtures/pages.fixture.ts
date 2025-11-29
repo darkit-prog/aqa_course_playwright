@@ -5,25 +5,35 @@ import {
 } from "@playwright/test";
 import { HomePage } from "ui/pages/home.page";
 import { SignInPage } from "ui/pages/signIn.page";
-import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
+import { NewProductPage } from "ui/pages/products/product.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
 import { AddNewProductUIService } from "ui/service/addNewProduct.ui-service";
 import { HomeUIService } from "ui/service/home.ui-service";
 import { LoginUIService } from "ui/service/login.ui-service";
 import { ProductsListUIService } from "ui/service/productsList.ui-service";
+import { CustomerListPage } from "ui/pages/customers/customersList.page";
+import { NewCustomerPage } from "ui/pages/customers/addNewCustomer.page";
+import { AddNewCustomerUIService } from "ui/service/addNewCustomer.ui-service";
+import { CustomersListUIService } from "ui/service/customersList.ui-service";
 
 export interface IPages {
   //pages
   loginPage: SignInPage;
   homePage: HomePage;
   productsListPage: ProductsListPage;
-  addNewProductPage: AddNewProductPage;
+  addNewProductPage: NewProductPage;
+  editProductPage: NewProductPage;
+  customerListPage: CustomerListPage;
+  addNewCustomerPage: NewCustomerPage;
 
   //ui-services
   homeUIService: HomeUIService;
   productsListUIService: ProductsListUIService;
   addNewProductUIService: AddNewProductUIService;
   loginUIService: LoginUIService;
+  homeUIServise: HomeUIService;
+  customersListUIService: CustomersListUIService;
+  addNewCustomerUIService: AddNewCustomerUIService;
 }
 
 export const test = base.extend<IPages>({
@@ -39,7 +49,17 @@ export const test = base.extend<IPages>({
     await use(new ProductsListPage(page));
   },
   addNewProductPage: async ({ page }, use) => {
-    await use(new AddNewProductPage(page));
+    await use(new NewProductPage(page));
+  },
+  editProductPage: async ({ page }, use) => {
+    await use(new NewProductPage(page));
+  },
+
+  customerListPage: async ({ page }, use) => {
+    await use(new CustomerListPage(page));
+  },
+  addNewCustomerPage: async ({ page }, use) => {
+    await use(new NewCustomerPage(page));
   },
 
   //ui-services
@@ -57,6 +77,14 @@ export const test = base.extend<IPages>({
 
   loginUIService: async ({ page }, use) => {
     await use(new LoginUIService(page));
+  },
+
+  customersListUIService: async ({ page }, use) => {
+    await use(new CustomersListUIService(page));
+  },
+
+  addNewCustomerUIService: async ({ page }, use) => {
+    await use(new AddNewCustomerUIService(page));
   },
 });
 
