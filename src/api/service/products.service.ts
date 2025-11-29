@@ -1,4 +1,4 @@
-import { ProductsApi } from "tests/api/api/products.api";
+import { ProductsApi } from "api/api/products.api";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { createProductSchema } from "data/schemas/products/create.schema";
 import { STATUS_CODES } from "data/statusCodes";

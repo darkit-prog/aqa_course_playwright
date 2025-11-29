@@ -1,7 +1,7 @@
 import { IProduct } from "data/types/product.types";
 import { generateProductData } from "./generateProductData";
 import { STATUS_CODES } from "../../statusCodes";
-import { NOTIFICATIONS, productWithSameName } from "../notifications";
+import { ERROR_MESSAGES, NOTIFICATIONS } from "../notifications";
 
 interface ICreateProductData {
     title: string,
@@ -112,7 +112,7 @@ export const invalidTestDataForCreateProduct: ICreateProductData[] = [
     {
         title: "Create product WITH not unique name",
         productData: generateProductData({ name : "test" }),
-        successMessage: productWithSameName("test"),
+        successMessage: ERROR_MESSAGES.PRODUCT_ALREADY_EXISTS("test"),
         statusCode: STATUS_CODES.CONFLICT
     },
     // Manufacturer

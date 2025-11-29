@@ -1,5 +1,5 @@
 import { expect } from "@playwright/test";
-import { LoginApi } from "tests/api/api/login.api";
+import { LoginApi } from "api/api/login.api";
 import { credentials } from "config/env";
 import { STATUS_CODES } from "data/statusCodes";
 import { ICredentials } from "data/types/credentials.types";
