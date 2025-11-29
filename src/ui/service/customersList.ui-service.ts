@@ -14,7 +14,7 @@ export class CustomersListUIService {
     }
 
     async openAddNewCustomerPage() {
-        await this.customerListPage.clickAddNewProduct();
+        await this.customerListPage.clickAddNewCustomer();
         await this.addNewCustomerPage.waitForOpened();
     }
 
@@ -37,6 +37,6 @@ export class CustomersListUIService {
     //   }
 
     async assertProductInTable(customerName: string, { visible }: { visible: boolean }) {
-        await expect(this.customerListPage.tableRowByName(customerName)).toBeVisible({ visible });
+        await expect(this.customerListPage.tableRowByEmail(customerName)).toBeVisible({ visible });
     }
 }

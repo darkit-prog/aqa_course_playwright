@@ -14,7 +14,7 @@ export class CustomerListPage extends SalesPortalPage {
 
     readonly uniqueElement = this.addNewCustomerButton;
 
-    async clickAddNewProduct() {
+    async clickAddNewCustomer() {
         await this.addNewCustomerButton.click();
     }
 }

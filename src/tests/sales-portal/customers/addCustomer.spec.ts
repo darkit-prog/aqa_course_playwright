@@ -2,18 +2,11 @@ import { generateCustomerData } from "data/salesPortal/customers/generateCustome
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { test, expect } from "fixtures/business.fixture";
 
-test.describe("[Integration] [Sales Portal] [Home] [Metrics]", () => {
+test.describe("[E2E] [Sales Portal] [Customers]", () => {
     let id = "";
     let token = ""
 
-    // За собой удаляем продукт через апи, разумеется:)
-    // - Удалить покупателя через API
-    test.afterEach(async ({ customerApiService }) => {
-        if (id) await customerApiService.delete(token, id);
-        id = "";
-    });
-
-    test(`[Customer] Add customer`, async({ loginUIService, homeUIService, addNewCustomerPage, customerApiService, customersListUIService, customerListPage }) => {
+    test(`Add customer`, async({ loginUIService, homeUIService, addNewCustomerPage, customerApiService, customersListUIService, customerListPage }) => {
         const customerData = generateCustomerData();
         
         //   - залогиниться
@@ -39,5 +32,12 @@ test.describe("[Integration] [Sales Portal] [Home] [Metrics]", () => {
     
         //   - Проверить наличие покупателя в таблице
         await expect(customerListPage.tableRowByEmail(customerData.email)).toBeVisible();
+    });
+
+    // За собой удаляем продукт через апи, разумеется:)
+    // - Удалить покупателя через API
+    test.afterEach(async ({ customerApiService }) => {
+        if (id) await customerApiService.delete(token, id);
+        id = "";
     });
 });
