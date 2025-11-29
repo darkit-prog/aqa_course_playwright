@@ -2,6 +2,7 @@ import { test, expect } from "fixtures/business.fixture";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import _ from "lodash";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
+import { TAGS } from "data/tags";
 
 test.describe("[E2E] [Sales Portal] [Products]", () => {
     let id = "";
@@ -12,16 +13,19 @@ test.describe("[E2E] [Sales Portal] [Products]", () => {
         id = "";
     });
 
-    test("Update product", async ({ loginUIService, productsListPage, productsListUIService, productsApiService, homeUIService, editProductPage }) => {
+    test("Update product", 
+        { tag: [TAGS.SMOKE, TAGS.UI] },
+        async ({ productsListPage, productsListUIService, productsApiService, homeUIService, editProductPage }) => {
         const editData = generateProductData();
         // залогиниться 
-        token = await loginUIService.loginAsAdmin();
+        token = await productsListPage.getAuthToken();
+
         // создать продукт через API
         const createdProduct = await productsApiService.create(token);
         id = createdProduct._id;
 
         //   - Перейти на страницу Edit Product
-        await homeUIService.homePage.open("#/products");
+        await homeUIService.homePage.open("products");
         await productsListUIService.openEditProductPage(createdProduct.name);
 
         //   - Заполнить поля валидными данными

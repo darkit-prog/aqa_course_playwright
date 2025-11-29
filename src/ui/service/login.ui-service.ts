@@ -3,6 +3,7 @@ import { credentials } from "config/env";
 import { ICredentials } from "data/types/credentials.types";
 import { HomePage } from "ui/pages/home.page";
 import { SignInPage } from "ui/pages/signIn.page";
+import { logStep } from "utils/report/logStep.utils";
 
 export class LoginUIService {
   homePage: HomePage;
@@ -13,10 +14,12 @@ export class LoginUIService {
     this.loginPage = new SignInPage(page);
   }
 
+  @logStep("Login via Api")
   async loginAsAdmin() {
     return await this.login(credentials);
   }
 
+  @logStep("Login via UI")
   async login(credentials: ICredentials) {
     await this.loginPage.open();
     await this.loginPage.sighIn(credentials);

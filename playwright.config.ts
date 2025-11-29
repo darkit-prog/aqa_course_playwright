@@ -24,19 +24,50 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: 5,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [
+    ["html"],
+    ["list"],
+    [
+      "allure-playwright",
+      {
+        suiteTitle: false,
+        environmentInfo: {
+          UI_URL: process.env.SALES_PORTAL_URL,
+          API_URL: process.env.SALES_PORTAL_API_URL,
+        },
+      },
+    ],
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
-    baseURL: process.env.SALES_PORTAL_URL || "http://localhost:8585/#"
+    trace: 'on',
+    baseURL: process.env.SALES_PORTAL_URL || "http://localhost:8585/#",
+    screenshot: "only-on-failure",
+    video: "on-first-retry",
   },
 
   /* Configure projects for major browsers */
   projects: [
+    {
+      name: 'setup',
+      use: { ...devices['Desktop Chrome'] },
+      testDir: "src/tests/sales-portal",
+      testMatch: /\.setup\.ts/,
+    },
+    {
+      name: 'sales-portal-ui',
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 1920, height: 1080 },
+        storageState: "src/.auth/user.json",
+      },
+      dependencies: ["setup"],
+      testDir: "src/tests/sales-portal",
+    },
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'], headless: true },

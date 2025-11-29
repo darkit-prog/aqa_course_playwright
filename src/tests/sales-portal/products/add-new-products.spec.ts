@@ -1,11 +1,11 @@
 import { test, expect } from "fixtures/business.fixture";
-import { credentials } from "config/env";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { HomePage } from "ui/pages/home.page";
 import { NewProductPage } from "ui/pages/products/product.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
 import { SignInPage } from "ui/pages/signIn.page";
+import { TAGS } from "data/tags";
 
 test.describe("[Sales Portal] [Products]", async () => {
   let id = "";
@@ -16,20 +16,37 @@ test.describe("[Sales Portal] [Products]", async () => {
     id = "";
   });
 
-  test("Add new product with services", async ({ loginUIService, homeUIService, productsListUIService, addNewProductUIService, productsListPage }) => {
-    token = await loginUIService.loginAsAdmin();
-    await homeUIService.homePage.waitForOpened();
+  test("Add new product with services", 
+    {
+      tag: [TAGS.SMOKE, TAGS.REGRESSION, TAGS.PRODUCTS],
+    },
+    async ({ 
+    // loginUIService, 
+    // homeUIService, 
+    // productsListUIService, 
 
-    await productsListUIService.openAddNewProductPage();
+    addNewProductUIService, 
+    productsListPage, 
+    // page 
+  }) => {
+      // token = await loginUIService.loginAsAdmin();
+      // await homeUIService.homePage.waitForOpened();
+      // await productsListUIService.openAddNewProductPage();
 
-    const createProduct = await addNewProductUIService.create();
-    id = createProduct._id;
+      await addNewProductUIService.open();
+      const createProduct = await addNewProductUIService.create();
+      id = createProduct._id;
+      token = await productsListPage.getAuthToken();
 
-    await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
-    await expect(productsListPage.tableRowByName(createProduct.name)).toBeVisible();
+      await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
+      await expect(productsListPage.tableRowByName(createProduct.name)).toBeVisible();
   });
 
-  test("Add new product", async ({ page }) => {
+  test("Add new product", 
+    {
+      tag: [TAGS.SMOKE, TAGS.REGRESSION, TAGS.PRODUCTS]
+    },
+    async ({ page }) => {
     const signInProductPage = new SignInPage(page);
     const homePage = new HomePage(page);
     const productsListPage = new ProductsListPage(page);
@@ -39,10 +56,9 @@ test.describe("[Sales Portal] [Products]", async () => {
     //login page
     // Открыть Sales Portal локально поднятый в докере
     await signInProductPage.open();
-    await expect(signInProductPage.emailInput).toBeVisible();
 
     // Войти в приложения используя учетные данные указанные в readme к проекту
-    await signInProductPage.sighIn(credentials);
+    // await signInProductPage.sighIn(credentials);
 
     // home page
     await homePage.waitForOpened();

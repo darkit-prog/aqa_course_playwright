@@ -1,23 +1,23 @@
 import { generateCustomerData } from "data/salesPortal/customers/generateCustomerData";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
+import { TAGS } from "data/tags";
 import { test, expect } from "fixtures/business.fixture";
 
 test.describe("[E2E] [Sales Portal] [Customers]", () => {
     let id = "";
     let token = ""
 
-    test(`Add customer`, async({ loginUIService, homeUIService, addNewCustomerPage, customerApiService, customersListUIService, customerListPage }) => {
+    test(`Add customer`, 
+        { tag: [TAGS.SMOKE, TAGS.UI] },
+        async({ homeUIService, addNewCustomerPage, customerApiService, customersListUIService, customerListPage }) => {
         const customerData = generateCustomerData();
         
         //   - залогиниться
-        token = await loginUIService.loginAsAdmin();
-
+        token = await customerListPage.getAuthToken();
         //   - Перейти на страницу Customers List
-        await homeUIService.homePage.open("#/customers");
-        // await customersListUIService.openAddNewCustomerPage();
+        await homeUIService.homePage.open("customers");
 
         //   - Перейти на страницу Add New Customer
-        // await addNewCustomerPage.open();
         await customersListUIService.openAddNewCustomerPage();
 
         //   - Заполнить поля валидными данными

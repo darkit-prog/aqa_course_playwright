@@ -3,9 +3,12 @@ import { generateProductResponseData } from "data/salesPortal/products/generateP
 import _ from "lodash";
 import { SALES_PORTAL_URL } from "config/env";
 import { convertToFullDateAndTime } from "utils/date.utils";
+import { TAGS } from "data/tags";
 
 test.describe("[Integration] [Sales Portal] [Products]", () => {
-  test("Product Details", async ({ loginAsAdmin, productsListPage, page, mock }) => {
+  test("Product Details", 
+    { tag: [TAGS.REGRESSION, TAGS.API] },
+    async ({ productsListPage, page, mock }) => {
     const expectedProductResponse = generateProductResponseData();
     await mock.productsPage({
       Products: [expectedProductResponse],
@@ -28,8 +31,7 @@ test.describe("[Integration] [Sales Portal] [Products]", () => {
       ErrorMessage: null,
     });
 
-    await loginAsAdmin();
-    await page.goto(SALES_PORTAL_URL + "#/products");
+    await page.goto(SALES_PORTAL_URL + "products");
     await productsListPage.waitForOpened();
     await productsListPage.clickAction(expectedProductResponse.name, "details");
     const { detailsModal } = productsListPage;

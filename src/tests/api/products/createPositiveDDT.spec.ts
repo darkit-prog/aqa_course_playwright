@@ -11,6 +11,7 @@ import { createProductSchema } from "data/schemas/products/create.schema";
 import _ from "lodash";
 import { validateResponse } from "utils/validation/validateResponse.utils";
 import { validTestDataForCreateProduct } from "data/salesPortal/products/createProductData";
+import { TAGS } from "data/tags";
 
 test.describe("[API] [Sales Portal] [Products]", () => {
   let id = "";
@@ -28,7 +29,9 @@ test.describe("[API] [Sales Portal] [Products]", () => {
 
   // Используйте LoginApiService, ProductsApi
   for (const { title, productData, successMessage, statusCode} of validTestDataForCreateProduct) {
-    test(`${title}`, async ({ productsApi }) => {
+    test(`${title}`, 
+      { tag: [TAGS.REGRESSION, TAGS.API] },
+      async ({ productsApi }) => {
         const createdProduct = await productsApi.create(productData, token);
         validateResponse(createdProduct, {
             status: statusCode,

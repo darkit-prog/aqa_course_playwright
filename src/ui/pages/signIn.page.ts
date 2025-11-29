@@ -7,6 +7,7 @@
 import { BasePage } from "./base.page";
 import { ICredentials } from "data/types/credentials.types";
 import { SALES_PORTAL_URL } from "config/env";
+import { logStep } from "utils/report/logStep.utils";
 
 export class SignInPage extends BasePage {
     readonly emailInput = this.page.locator("#emailinput");
@@ -14,10 +15,12 @@ export class SignInPage extends BasePage {
     readonly loginButton = this.page.locator("button[type='submit']");
     readonly uniqueElement = this.page.locator("#signInPage");
 
+    @logStep("Open choosen page")
     async open() {
         await this.page.goto(SALES_PORTAL_URL);
     }
 
+    @logStep("Sign in with credentials")
     async sighIn(credentials: Partial<ICredentials>) {
         if (credentials.username) await this.emailInput.fill(credentials.username);
         if (credentials.password) await this.passwordInput.fill(credentials.password);

@@ -1,3 +1,4 @@
+import { logStep } from "utils/report/logStep.utils";
 import { BaseModal } from "./base.modal";
 
 export class ConfirmationModal extends BaseModal {
@@ -9,14 +10,17 @@ export class ConfirmationModal extends BaseModal {
   readonly closeButton = this.uniqueElement.locator("button.btn-close");
   readonly confirmationMessage = this.uniqueElement.locator("div.modal-body p");
 
+  @logStep("Click on button to close confirmation modal")
   async clickClose() {
     await this.closeButton.click();
   }
 
+  @logStep("Click on button not to save changes in modal")
   async clickCancel() {
     await this.cancelButton.click();
   }
 
+  @logStep("Click on button to confirm changes in modal")
   async clickConfirm() {
     await this.confirmButton.click();
   }

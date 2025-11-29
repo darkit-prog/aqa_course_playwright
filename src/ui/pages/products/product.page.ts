@@ -13,8 +13,6 @@ export class NewProductPage extends SalesPortalPage {
 
   readonly uniqueElement = this.title;
 
-
-  //http://localhost:8585/#/products/691635f6dd88b5714d826c6a/edit
   async fillForm(productData: Partial<IProduct>) {
     if (productData.name) await this.nameInput.fill(productData.name);
     if (productData.manufacturer) await this.manufacturerSelect.selectOption(productData.manufacturer);

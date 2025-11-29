@@ -6,11 +6,11 @@
 //   Amount: обязательное, Amount should be in range 0-999
 //   Notes: Notes should be in range 0-250 and without < or > symbols
 
-import { test, expect } from "fixtures/api.fixture";
-import { createProductSchema } from "data/schemas/products/create.schema";
+import { test } from "fixtures/api.fixture";
 import _ from "lodash";
 import { validateResponse } from "utils/validation/validateResponse.utils";
 import { invalidTestDataForCreateProduct } from "data/salesPortal/products/createProductData";
+import { TAGS } from "data/tags";
 
 test.describe("[API] [Sales Portal] [Products]", () => {
 //   let id = "";
@@ -22,7 +22,9 @@ test.describe("[API] [Sales Portal] [Products]", () => {
   });
 
   for (const { title, productData, successMessage, statusCode} of invalidTestDataForCreateProduct) {
-    test(`${title}`, async ({ productsApi }) => {
+    test(`${title}`, 
+      { tag: [TAGS.REGRESSION, TAGS.API] },
+      async ({ productsApi }) => {
         const createdProduct = await productsApi.create(productData, token);
         // console.log(createProductSchema.properties.Product.properties)
         validateResponse(createdProduct, {

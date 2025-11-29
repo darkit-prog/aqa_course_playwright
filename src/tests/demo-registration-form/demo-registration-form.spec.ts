@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test"
+import { TAGS } from "data/tags";
 
 // Создайте ОДИН смоук тест со следующими шагами:
 // 1. Переход на страницу https://anatoly-karpovich.github.io/demo-registration-form/
@@ -67,7 +68,9 @@ const credentials: ICredential  = {
 }
 
 test.describe("Register in demo-registration-form", () => {
-    test("Register with valid credentions", async ({ page }) => {
+    test("Register with valid credentions", 
+        { tag: [TAGS.SMOKE, TAGS.UI] },
+        async ({ page }) => {
         const url = "https://anatoly-karpovich.github.io/demo-registration-form/";
         const headerPage = page.locator("h2.text-center");
         const headerRegisterForm = page.locator("h2.text-center");
